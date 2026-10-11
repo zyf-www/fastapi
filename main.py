@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 
 app = FastAPI()
 @app.get("/")
@@ -15,3 +16,13 @@ async def items(item_id: int):
 @app.get("/user")
 async def user(skip: int = 0, limit: int = 10):
     return {"skip": skip, "limit": limit}
+
+
+class items(BaseModel):
+    name: str
+    price: float
+    description: str | None = None
+
+@app.post("/items")
+async def create_item(item: items):
+    return item
