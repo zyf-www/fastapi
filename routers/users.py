@@ -1,5 +1,8 @@
 from fastapi import FastAPI ,HTTPException ,APIRouter
-from schemas import User
+
+from database import SessionDep
+from sqlmodel import select
+from models import User
 router = APIRouter()
 
 
@@ -10,10 +13,14 @@ async def user(skip: int = 0, limit: int = 10):
 
 
 @router.post("/users/register")
-async def register_user(user:User):
-    if user.username == "admin":
+async def register_user(user:User,session:SessionDep):
+    existing_user = session.exec(select(User).where(User.username == user.username)).first()
+    if existing_user:
         raise HTTPException(status_code = 400,detail="Username already registered")
-    return user
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return {"message":"User created successfully","user":user.username}
 
 @router.get("/admin/dashboard")
 async def admin_dashboard(token: str |None = None ):

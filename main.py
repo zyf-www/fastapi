@@ -1,9 +1,15 @@
 from fastapi import FastAPI ,HTTPException
 from routers import items, users
-
+from sqlmodel import SQLModel
+import database as db
+import models
 app = FastAPI()
 app.include_router(items.router)
 app.include_router(users.router)
+
+@app.on_event("startup")
+def on_startup():
+    SQLModel.metadata.create_all(db.engine)
 @app.get("/")
 def root():
     return {"原神nb"}

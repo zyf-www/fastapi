@@ -1,10 +1,10 @@
 from fastapi import FastAPI ,HTTPException ,APIRouter
-from schemas import item
+from schemas import Item
 router = APIRouter()
 
 
 @router.post("/items")
-async def create_item(item: item):
+async def create_item(item: Item):
     return item
 
 database ={
