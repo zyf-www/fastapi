@@ -2,3 +2,13 @@ fastapi
 uvicorn[standard]
 sqlalchemy
 pydantic
+langchain
+langchain-openai
+langchain-community
+langchain-chroma
+langchain-text-splitters
+chromadb
+dashscope
+python-dotenv
+unstructured
+markdown
